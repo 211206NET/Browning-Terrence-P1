@@ -1,0 +1,15 @@
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.csproj.AssemblyReference.cache
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.AssemblyInfoInputs.cache
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.AssemblyInfo.cs
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.csproj.CoreCompileInputs.cache
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\bin\Debug\net6.0\StoreDL.deps.json
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\bin\Debug\net6.0\StoreDL.dll
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\bin\Debug\net6.0\ref\StoreDL.dll
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\bin\Debug\net6.0\StoreDL.pdb
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\bin\Debug\net6.0\StoreModels.dll
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\bin\Debug\net6.0\StoreModels.pdb
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.csproj.CopyComplete
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.dll
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\ref\StoreDL.dll
+C:\Users\Browright7479\Documents\Revature\Browning-Terrence-P0\StoreDL\obj\Debug\net6.0\StoreDL.pdb
