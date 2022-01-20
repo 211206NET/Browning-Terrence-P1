@@ -1,0 +1,1 @@
+Server=tcp:database-1.cqrlbp1rvkax.us-east-2.rds.amazonaws.com,1433;Initial Catalog=P0DB;User ID=admin;Password=Thedog#47;Encrypt=False;
