@@ -239,12 +239,13 @@ public void AddProduct(Product productToAdd)
         using SqlCommand cmd = new SqlCommand(query, connection);
         SqlParameter param = new SqlParameter("@custoId", Id);
         cmd.Parameters.Add(param);
-
+        
         using SqlDataReader reader = cmd.ExecuteReader();
         Customer customer = new Customer();
         if (reader.Read())
         {
-            customer.Id = reader.GetInt32(0);
+            int ID = Customer.Id;
+            ID = reader.GetInt32(0);
             customer.Username = reader.GetString(1);
             customer.Password = reader.GetString(2);
             customer.Email = reader.GetString(3);
