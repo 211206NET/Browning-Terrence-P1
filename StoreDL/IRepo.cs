@@ -25,9 +25,10 @@ public interface IRepo
     void AddProduct(Product productToAdd);
 
     Store GetStoreById(int Id);
+    Customer GetCustomerById(int Id);
 
     // void AddLineItem(LineItem newLI, int orderID);   
-       void AddOrder(Order orderToAdd);  
+    void AddOrder(Order orderToAdd);  
     // void RemoveProduct(int prodID);
     // void RestockStoreInventory(int prodID, int quantity);
     // void AddProductToInventory(int prodID, Inventory inventToAdd);

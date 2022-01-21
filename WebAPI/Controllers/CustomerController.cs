@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
         {
             _bl = bl;
         }
-        // GET: api/<ProductController>
+        // GET: api/<CustomerController>
         [HttpGet]
         public ActionResult<List<Customer>> Get()
         {
@@ -30,31 +30,30 @@ namespace WebAPI.Controllers
                 return NoContent();
             }
         }
+        // GET api/<CustomerController>/5
+        [HttpGet("{id}")]
+        public ActionResult<Customer> Get(int id)
+        {
+            Customer foundCusto = _bl.GetCustomerById(id);
+            if (foundCusto != null)
+            {
+                return Ok(foundCusto);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+                // PUT api/<ProductController>/5
+                //[HttpPut("{id}")]
+                //public void Put(int id, [FromBody] string value)
+                //{
+                //}
+
+                // DELETE api/<ProductController>/5
+                //[HttpDelete("{id}")]
+                //public void Delete(int id)
+            
+        }
     }
 
-    //GET api/<CustomerController>/5
-        /*[HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ProductController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-    }*/
-}

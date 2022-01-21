@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         public ActionResult<Store> Get(int id)
         {
             Store foundSto = _bl.GetStoreById(id);
-            if (foundSto.Id != 0)
+            if (foundSto != null)
             {
                 return Ok(foundSto);
             }

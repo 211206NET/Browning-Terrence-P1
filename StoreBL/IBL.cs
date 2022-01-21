@@ -12,6 +12,7 @@ public interface IBL
     void AddStore(Store storeToAdd);
     void AddProduct(Product productToAdd);
     Store GetStoreById(int Id);
+    Customer GetCustomerById(int Id);
     // void AddLineItem(LineItem newLI, int orderID);   
     void AddOrder(Order orderToAdd);  
     // void RemoveProduct(int prodID);

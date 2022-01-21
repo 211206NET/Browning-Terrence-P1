@@ -45,19 +45,24 @@ public class SFBL : IBL
     {
         return _dl.GetStoreById(Id);
     }
+    public Customer GetCustomerById(int Id)
+    {
+        return _dl.GetCustomerById(Id);
+    }
 
-        //      public void AddLineItem(LineItem newLI, int orderID)
-        //     {
-        //         _dl.AddLineItem(newLI, orderID);
-        //     }
+    //      public void AddLineItem(LineItem newLI, int orderID)
+    //     {
+    //         _dl.AddLineItem(newLI, orderID);
+    //     }
     public void AddOrder(Order orderToAdd)
     {
         _dl.AddOrder(orderToAdd);
     }
-     public List<Order> GetAllOrders(int CID)
-     {
+    public List<Order> GetAllOrders(int CID)
+    {
         return _dl.GetAllOrders(CID);
-     }
+    }
+    
         //     public int GetCustomerID(string username)
         //     {
         //         return _dl.GetCustomerID(username);
