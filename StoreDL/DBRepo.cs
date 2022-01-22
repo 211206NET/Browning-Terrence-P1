@@ -20,7 +20,6 @@ using Serilog;
 private static List<Customer> _allCustomers = new List<Customer>(); 
 public List<Customer> GetAllCustomers() 
 {
-    int CID = Customer.Id;
     List<Customer> allCustom = new List<Customer>();
     using SqlConnection connection = new SqlConnection(_connectionString);
         string CustomSelect = $"Select * From Customer ";
@@ -43,8 +42,7 @@ public List<Customer> GetAllCustomers()
 /// </summary>
 /// <param name="customerToAdd">new customer object to add</param>
 public void AddCustomer(Customer customerToAdd)
-{  
-    int CID = Customer.Id;
+{ 
     ///Establishing new connection
     using SqlConnection connection = new SqlConnection(_connectionString);
     connection.Open();
@@ -52,7 +50,7 @@ public void AddCustomer(Customer customerToAdd)
     string sqlCmd = "INSERT INTO Customer (Id, UserName, PassWord, Email) VALUES (@Id, @UserName, @PassWord, @Email)"; 
     using SqlCommand cmdAddUser= new SqlCommand(sqlCmd, connection);
     ///Adding paramaters
-    cmdAddUser.Parameters.AddWithValue("@Id", CID);
+    cmdAddUser.Parameters.AddWithValue("@Id", customerToAdd.Id);
     cmdAddUser.Parameters.AddWithValue("@UserName", customerToAdd.Username);
     cmdAddUser.Parameters.AddWithValue("@PassWord", customerToAdd.Password);
     cmdAddUser.Parameters.AddWithValue("@Email", customerToAdd.Email);        
@@ -60,7 +58,7 @@ public void AddCustomer(Customer customerToAdd)
     cmdAddUser.ExecuteNonQuery();
     connection.Close();
     
-    Log.Information("Customer added{Id}{Username}{Password}{Email}",CID,customerToAdd.Username,customerToAdd.Password,customerToAdd.Email);
+    Log.Information("Customer added{Id}{Username}{Password}{Email}",customerToAdd.Id,customerToAdd.Username,customerToAdd.Password,customerToAdd.Email);
 }
 /// <summary>
 /// Returns all stores from allStores List
@@ -144,18 +142,18 @@ public void AddProduct(Product productToAdd)
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         ///Our insert command to add a user
-        string sqlCmd = "INSERT INTO Order (CustomerId, OrderNumber, StoreId, Total) VALUES (@CustomerId, @OrderNumber, @StoreId, @Total)";
+        string sqlCmd = "INSERT INTO Order (CustomerId, OrderId, StoreId, Total) VALUES (@CustomerId, @OrderNumber, @StoreId, @Total)";
         using SqlCommand cmdAddUser = new SqlCommand(sqlCmd, connection);
         ///Adding paramaters
         cmdAddUser.Parameters.AddWithValue("@CustomerId", orderToAdd.CustomerId);
-        cmdAddUser.Parameters.AddWithValue("@OrderNumber", orderToAdd.OrderNumber);
+        cmdAddUser.Parameters.AddWithValue("@OrderId", orderToAdd.OrderId);
         cmdAddUser.Parameters.AddWithValue("@StoreId", orderToAdd.StoreId);
         cmdAddUser.Parameters.AddWithValue("@Total", orderToAdd.Total);
         ///Executing command
         cmdAddUser.ExecuteNonQuery();
         connection.Close();
 
-        Log.Information("Order added{CustomerId}{OrderNumber}{StoreId}{Total}", orderToAdd.CustomerId, orderToAdd.OrderNumber, orderToAdd.StoreId, orderToAdd.Total);
+        Log.Information("Order added{CustomerId}{OrderNumber}{StoreId}{Total}", orderToAdd.CustomerId, orderToAdd.OrderId, orderToAdd.StoreId, orderToAdd.Total);
 
     }
     public List<Product> GetAllProducts()
@@ -184,7 +182,6 @@ public void AddProduct(Product productToAdd)
     /// <returns>all orders placed by that user</returns>
    public List<Order> GetAllOrders(int CID)
     {
-        CID = Customer.Id;
         List<Order> allOrders = new List<Order>();
         using(SqlConnection connection = new SqlConnection(_connectionString))
         {
@@ -197,7 +194,7 @@ public void AddProduct(Product productToAdd)
                     while (reader.Read())
                     {
                         Order order = new Order();
-                        order.OrderNumber = reader.GetInt32(0);
+                        order.OrderId = reader.GetInt32(0);
                         CID = reader.GetInt32(1);
                         order.StoreId = reader.GetInt32(2);
                         order.Total = reader.GetInt32(3);
@@ -243,9 +240,8 @@ public void AddProduct(Product productToAdd)
         using SqlDataReader reader = cmd.ExecuteReader();
         Customer customer = new Customer();
         if (reader.Read())
-        {
-            int ID = Customer.Id;
-            ID = reader.GetInt32(0);
+        {          
+            customer.Id = reader.GetInt32(0);
             customer.Username = reader.GetString(1);
             customer.Password = reader.GetString(2);
             customer.Email = reader.GetString(3);
@@ -253,8 +249,37 @@ public void AddProduct(Product productToAdd)
         connection.Close();
         return customer;
     }
+    public Product GetProductById(int Id)
+    {
+        string query = "Select * From Product Where Id = @prodId";
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        using SqlCommand cmd = new SqlCommand(query, connection);
+        SqlParameter param = new SqlParameter("@prodId", Id);
+        cmd.Parameters.Add(param);
+
+        using SqlDataReader reader = cmd.ExecuteReader();
+        Product product = new Product();
+        if (reader.Read())
+        {
+            product.Id = reader.GetInt32(0);
+            product.ProductName = reader.GetString(1);
+            product.Description = reader.GetString(2);
+        }
+        connection.Close();
+        return product;
+    }
+
+    public List<Order> GetAllOrders()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Order GetOrderById(int Id)
+    {
+        throw new NotImplementedException();
+    }
 }
 
-
-
-
+ 
+  

@@ -11,35 +11,31 @@ namespace WebAPI.Controllers
     public class OrderController : ControllerBase
     {
         private IBL _bl;
-        
-
         public OrderController(IBL bl)
         {
             _bl = bl;
         }
+ 
         // GET: api/<OrderController>/CID
         [HttpGet]
-        public ActionResult<List<Order>> Get()
+        public List<Order> Get()
         {
-            int CID = 0;
-            List<Order> allOrders = _bl.GetAllOrders(CID);
-            if (allOrders.Count != 0)
+            return _bl.GetAllOrders();
+        }
+
+        // GET api/<OrderController>/5
+        [HttpGet("{id}")]
+        public ActionResult<Order> Get(int id)
+        {
+            Order foundOrde = _bl.GetOrderById(id);
+            if(foundOrde.Id != 0)
             {
-                return Ok(allOrders);
+                return Ok(foundOrde);
             }
             else
             {
                 return NoContent();
             }
-        }
-    }
-
-    // GET api/<OrderController>/5
-    //[HttpGet("{id}")]
-    //    public string Get(int id)
-    //    {
-    //        return "value";
-    //    }
 
     //    // POST api/<OrderController>
     //    [HttpPost]
@@ -57,6 +53,6 @@ namespace WebAPI.Controllers
     //    [HttpDelete("{id}")]
     //    public void Delete(int id)
     //    {
-    //    }
-    //}
+      }
+   }
 }

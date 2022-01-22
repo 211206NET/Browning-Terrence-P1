@@ -17,44 +17,41 @@ namespace WebAPI.Controllers
         }
         // GET: api/<ProductController>
         [HttpGet]
-        public ActionResult<List<Product>> Get()
+        public List<Product> Get()
         {
-            List<Product> allProducts = _bl.GetAllProducts();
-            if (allProducts.Count != 0)
+            return _bl.GetAllProducts();
+        }
+
+        //GET api/<ProductController>/5
+        [HttpGet("{id}")]
+        public ActionResult<Product> Get(int id)
+        {
+            Product foundProd = _bl.GetProductById(id);
+            if (foundProd.Id != 0)
             {
-                return Ok(allProducts);
+                return Ok(foundProd);
             }
             else
             {
                 return NoContent();
             }
+            // POST api/<ProductController>
+            //[HttpPost]
+            //public void Post([FromBody] string value)
+            //{
+            //}
+
+            //// PUT api/<ProductController>/5
+            //[HttpPut("{id}")]
+            //public void Put(int id, [FromBody] string value)
+            //{
+            //}
+
+            // DELETE api/<ProductController>/5
+            //[HttpDelete("{id}")]
+            //public void Delete(int id)
+            //{
         }
     }
-
-        //GET api/<ProductController>/5
-        /*[HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ProductController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-    }*/
 }
 

@@ -18,24 +18,17 @@ namespace WebAPI.Controllers
         }
         // GET: api/<CustomerController>
         [HttpGet]
-        public ActionResult<List<Customer>> Get()
-        {
-            List<Customer> allCustomers = _bl.GetAllCustomers();
-            if (allCustomers.Count != 0)
-            {
-                return Ok(allCustomers);
-            }
-            else
-            {
-                return NoContent();
-            }
+        public List<Customer> Get()
+        {    
+            return _bl.GetAllCustomers();
         }
+    
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
         public ActionResult<Customer> Get(int id)
         {
             Customer foundCusto = _bl.GetCustomerById(id);
-            if (foundCusto != null)
+            if (foundCusto.Id != 0)
             {
                 return Ok(foundCusto);
             }
@@ -44,13 +37,13 @@ namespace WebAPI.Controllers
                 return NoContent();
             }
         }
-                // PUT api/<ProductController>/5
+                // PUT api/<CustomerController>/5
                 //[HttpPut("{id}")]
                 //public void Put(int id, [FromBody] string value)
                 //{
                 //}
 
-                // DELETE api/<ProductController>/5
+                // DELETE api/<CustomerController>/5
                 //[HttpDelete("{id}")]
                 //public void Delete(int id)
             

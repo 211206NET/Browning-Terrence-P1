@@ -8,10 +8,12 @@ public class Order
         this.LineItems = new List<LineItem>();
     }
     public int CustomerId { get; set; }
-    public int OrderNumber { get; set; }
+    public int OrderId { get; set; }
     public int StoreId { get; set; }
     public decimal Total { get; set; }
     public List<LineItem> LineItems { get; set; }
+    public int Id { get; set; }
+
     // public decimal CalculateTotal() {
     //     //a method that would go through each lineitem in LineItems property
     //     //and sets the total property of the particular order object
@@ -32,7 +34,7 @@ public class Order
 
     public void ToDataRow(ref DataRow row)
     {
-        row["OrderId"] = this.OrderNumber;
+        row["OrderId"] = this.OrderId;
         row["CustomerId"] = this.CustomerId;
         row["StoreId"] = this.StoreId;
         row["Total"] = this.Total;
