@@ -17,14 +17,14 @@ namespace WebAPI.Controllers
             _bl = bl;
         }
         // GET: api/<StoreFrontController>
-        [HttpGet]
+        [HttpGet("GetAllStores")]
         public List<Store> Get()
         {
             return _bl.GetAllStores();
         }
 
         //GET api/<StoreFrontController>/5
-        [HttpGet("{id}")]
+        [HttpGet("GetStoreById{id}")]
         public ActionResult<Store> Get(int id)
         {
             Store foundSto = _bl.GetStoreById(id);
@@ -37,22 +37,21 @@ namespace WebAPI.Controllers
                 return NoContent();
             }
         }
-        //}
 
         // POST api/<StoreFrontController>
-        //[HttpPost]
-        //public ActionResult Post([FromBody] Store stoToAdd)
-        //{
-        //    try
-        //    {
-        //        _bl.AddStore(stoToAdd);
-        //        return Created("Successfully added", stoToAdd);
-        //    }
-        //    catch (DuplicateRecordException ex)
-        //    {
-        //        return Conflict(ex.Message);
-        //    }
-        //}
+        [HttpPost("CreateAStore")]
+        public ActionResult Post([FromBody] Store storeToAdd)
+        {
+            try
+            {
+                _bl.AddStore(storeToAdd);
+                return Created("Successfully added", storeToAdd);
+            }
+            catch (DuplicateRecordException ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
 
         //// PUT api/<StoreFrontController>/5
         //[HttpPut("{id}")]

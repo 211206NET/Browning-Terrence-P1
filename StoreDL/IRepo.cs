@@ -31,8 +31,13 @@ public interface IRepo
     Product GetProductById(int Id);
     Order GetOrderById(int Id);
 
-    // void AddLineItem(LineItem newLI, int orderID);   
+    public bool CustomerLogin(string Username, string Password);
+    public Customer GetCustomerUsername(string username);
+    bool IsDuplicate(Store store);
     
+
+    // void AddLineItem(LineItem newLI, int orderID);   
+
     // void RemoveProduct(int prodID);
     // void RestockStoreInventory(int prodID, int quantity);
     // void AddProductToInventory(int prodID, Inventory inventToAdd);

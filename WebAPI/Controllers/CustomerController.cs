@@ -17,14 +17,14 @@ namespace WebAPI.Controllers
             _bl = bl;
         }
         // GET: api/<CustomerController>
-        [HttpGet]
+        [HttpGet("GetAllCustomers")]
         public List<Customer> Get()
         {    
             return _bl.GetAllCustomers();
         }
-    
+
         // GET api/<CustomerController>/5
-        [HttpGet("{id}")]
+        [HttpGet("GetCustomerBy{id}")]
         public ActionResult<Customer> Get(int id)
         {
             Customer foundCusto = _bl.GetCustomerById(id);
@@ -37,6 +37,23 @@ namespace WebAPI.Controllers
                 return NoContent();
             }
         }
+            [HttpGet("CustomerLogin")]
+        public ActionResult<Customer> CustomerLogin(string Username, string UserPassword)
+            {
+            bool validcheck = _bl.CustomerLogin(Username, UserPassword);
+            Customer selectedCustomer = _bl.GetCustomerUsername(Username);
+
+            if (validcheck == true)
+            {
+                return Ok(selectedCustomer);
+            }
+            else
+            {
+                return Unauthorized("You are Unauthorized");
+            }
+
+            }
+        
                 // PUT api/<CustomerController>/5
                 //[HttpPut("{id}")]
                 //public void Put(int id, [FromBody] string value)

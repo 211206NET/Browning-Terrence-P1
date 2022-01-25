@@ -13,7 +13,7 @@ public class SFBL : IBL
     /// <returns>list of all stores</returns>
     public List<Store> GetAllStores()
     {
-         return _dl.GetAllStores();
+        return _dl.GetAllStores();
     }
     public List<Customer> GetAllCustomers()
     {
@@ -33,7 +33,11 @@ public class SFBL : IBL
     }
     public void AddStore(Store storeToAdd)
     {
-        _dl.AddStore(storeToAdd);
+        if (!_dl.IsDuplicate(storeToAdd))
+        {
+            _dl.AddStore(storeToAdd);
+        }
+        else throw new DuplicateRecordException("A store with same name, and address already exists!");
     }
     public void AddProduct(Product ProductToAdd)
     {
@@ -60,6 +64,22 @@ public class SFBL : IBL
     {
         return _dl.GetOrderById(Id);
     }
+
+    public bool IsDuplicate(Store store)
+    {
+        throw new DuplicateRecordException();
+    }
+
+    public bool CustomerLogin(string Username, string Password)
+    {
+        return _dl.CustomerLogin(Username, Password);
+    }
+
+    public Customer GetCustomerUsername(string username)
+    {
+        return _dl.GetCustomerUsername(username);
+    }
+
 
     //      public void AddLineItem(LineItem newLI, int orderID)
     //     {

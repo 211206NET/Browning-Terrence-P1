@@ -17,14 +17,14 @@ namespace WebAPI.Controllers
         }
  
         // GET: api/<OrderController>/CID
-        [HttpGet]
+        [HttpGet("GetAllOrders")]
         public List<Order> Get()
         {
             return _bl.GetAllOrders();
         }
 
         // GET api/<OrderController>/5
-        [HttpGet("{id}")]
+        [HttpGet("GetOrderById{id}")]
         public ActionResult<Order> Get(int id)
         {
             Order foundOrde = _bl.GetOrderById(id);

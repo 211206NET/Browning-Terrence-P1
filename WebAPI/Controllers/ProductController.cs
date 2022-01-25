@@ -16,14 +16,14 @@ namespace WebAPI.Controllers
             _bl = bl;
         }
         // GET: api/<ProductController>
-        [HttpGet]
+        [HttpGet("GetAllProducts")]
         public List<Product> Get()
         {
             return _bl.GetAllProducts();
         }
 
         //GET api/<ProductController>/5
-        [HttpGet("{id}")]
+        [HttpGet("GetProductById{id}")]
         public ActionResult<Product> Get(int id)
         {
             Product foundProd = _bl.GetProductById(id);
@@ -35,23 +35,27 @@ namespace WebAPI.Controllers
             {
                 return NoContent();
             }
-            // POST api/<ProductController>
-            //[HttpPost]
-            //public void Post([FromBody] string value)
-            //{
-            //}
-
-            //// PUT api/<ProductController>/5
-            //[HttpPut("{id}")]
-            //public void Put(int id, [FromBody] string value)
-            //{
-            //}
-
-            // DELETE api/<ProductController>/5
-            //[HttpDelete("{id}")]
-            //public void Delete(int id)
-            //{
         }
+            [HttpPost("CreateAProduct")]
+            public ActionResult Post([FromBody] Product ProdToAdd)
+   
+                {
+                    _bl.AddProduct(ProdToAdd);
+                    return Created("Product Created", ProdToAdd);
+                }
+        
+
+                //// PUT api/<ProductController>/5
+                //[HttpPut("{id}")]
+                //public void Put(int id, [FromBody] string value)
+                //{
+                //}
+
+                // DELETE api/<ProductController>/5
+                //[HttpDelete("{id}")]
+                //public void Delete(int id)
+                //{
+            }
     }
-}
+
 

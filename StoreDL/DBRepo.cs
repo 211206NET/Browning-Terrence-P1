@@ -99,10 +99,10 @@ public void AddStore(Store storeToAdd)
     ///Adding paramaters
     cmdAddUser.Parameters.AddWithValue("@Id", storeToAdd.Id);
     cmdAddUser.Parameters.AddWithValue("@Name", storeToAdd.Name);
-    cmdAddUser.Parameters.AddWithValue("@Address", storeToAdd.Address);   
-    ///Executing command
-    cmdAddUser.ExecuteNonQuery();
-    connection.Close();
+    cmdAddUser.Parameters.AddWithValue("@Address", storeToAdd.Address);
+        ///Executing command
+        cmdAddUser.ExecuteNonQuery();
+        connection.Close();
 
     Log.Information("Store added{Id}{name}{Address}",storeToAdd.Id,storeToAdd.Name,storeToAdd.Address);
 
@@ -114,14 +114,16 @@ public void AddStore(Store storeToAdd)
 /// <param name="productToAdd">new product object to add</param>
 public void AddProduct(Product productToAdd)
 {
-    ///Establishing new connection
-    using SqlConnection connection = new SqlConnection(_connectionString);
+        Random rnd2 = new Random();
+        int RandomID = rnd2.Next(100000);
+        ///Establishing new connection
+        using SqlConnection connection = new SqlConnection(_connectionString);
     connection.Open();
     ///Our insert command to add a user
     string sqlCmd = "INSERT INTO Product (Id, ProductName, Description, Price) VALUES (@Id, @ProductName, @Description, @Price)"; 
     using SqlCommand cmdAddUser= new SqlCommand(sqlCmd, connection);
     ///Adding paramaters
-    cmdAddUser.Parameters.AddWithValue("@Id", productToAdd.Id);
+    cmdAddUser.Parameters.AddWithValue("@Id", RandomID);
     cmdAddUser.Parameters.AddWithValue("@ProductName", productToAdd.ProductName);
     cmdAddUser.Parameters.AddWithValue("@Description", productToAdd.Description);  
     cmdAddUser.Parameters.AddWithValue("@Price", productToAdd.Price); 
@@ -142,7 +144,7 @@ public void AddProduct(Product productToAdd)
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         ///Our insert command to add a user
-        string sqlCmd = "INSERT INTO Order (CustomerId, OrderId, StoreId, Total) VALUES (@CustomerId, @OrderNumber, @StoreId, @Total)";
+        string sqlCmd = "INSERT INTO Orders (CustomerId, OrderId, StoreId, Total) VALUES (@CustomerId, @OrderNumber, @StoreId, @Total)";
         using SqlCommand cmdAddUser = new SqlCommand(sqlCmd, connection);
         ///Adding paramaters
         cmdAddUser.Parameters.AddWithValue("@CustomerId", orderToAdd.CustomerId);
@@ -180,33 +182,25 @@ public void AddProduct(Product productToAdd)
     /// </summary>
     /// <param name="CID"></param>
     /// <returns>all orders placed by that user</returns>
-   public List<Order> GetAllOrders(int CID)
+   public List<Order> GetAllOrders()
     {
-        List<Order> allOrders = new List<Order>();
-        using(SqlConnection connection = new SqlConnection(_connectionString))
+        List<Order> allOrder = new List<Order>();
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        string OrderSelect = $"Select * From Orders ";
+        DataSet OrderSet = new DataSet();
+        using SqlDataAdapter OrdeAdapter = new SqlDataAdapter(OrderSelect, connection);
+        OrdeAdapter.Fill(OrderSet, "Orders");
+        DataTable OrdeTable = OrderSet.Tables["Orders"];
+        if (OrdeTable != null)
         {
-            connection.Open();
-            string OrdSelect = $"SELECT * FROM Orders WHERE CustomerId = {CID}";
-            using(SqlCommand cmd = new SqlCommand(OrdSelect, connection))
+            foreach (DataRow row in OrdeTable.Rows)
             {
-                using(SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Order order = new Order();
-                        order.OrderId = reader.GetInt32(0);
-                        CID = reader.GetInt32(1);
-                        order.StoreId = reader.GetInt32(2);
-                        order.Total = reader.GetInt32(3);
-                        order.OrderDate = reader.GetDateTime(4);
 
-                        allOrders.Add(order);
-                    }
-                }
+                Order orde = new Order(row);
+                allOrder.Add(orde);
             }
-            connection.Close();
         }
-        return allOrders;
+        return allOrder;
     }
     public Store GetStoreById(int Id)
     {
@@ -270,16 +264,114 @@ public void AddProduct(Product productToAdd)
         return product;
     }
 
-    public List<Order> GetAllOrders()
-    {
-        throw new NotImplementedException();
-    }
-
     public Order GetOrderById(int Id)
     {
-        throw new NotImplementedException();
+        string query = "Select * From Orders Where OrderId = @OrderId";
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        using SqlCommand cmd = new SqlCommand(query, connection);
+        //SqlParameter param = new SqlParameter("@OrderId", Id);
+        cmd.Parameters.AddWithValue("@OrderId", Id);
+        //cmd.Parameters.Add(param);
+
+        using SqlDataReader reader = cmd.ExecuteReader();
+        Order order = new Order();
+        if (reader.Read())
+        {
+            order.Id = reader.GetInt32(0);
+            order.CustomerId = reader.GetInt32(1);
+            order.OrderId = reader.GetInt32(2);                                    
+            order.StoreId = reader.GetInt32(3);
+            order.Total = reader.GetDecimal(4);
+            //order.OrderDate = reader.GetDateTime(5);
+        }
+        connection.Close();
+        return order;
     }
+    public bool IsDuplicate(Store store)
+    {
+        string searchQuery = $"SELECT * FROM Store WHERE Name='{store.Name}' AND Address='{store.Address}";
+
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        using SqlCommand cmd = new SqlCommand(searchQuery, connection);
+
+        connection.Open();
+
+        using SqlDataReader reader = cmd.ExecuteReader();
+
+        if (reader.HasRows)
+        {
+            //Query returned something, there exists a record that shares the same name, and address to the store the user is trying to create 
+            return true;
+        }
+        //no record was returned. No duplicate record in the db
+        return false;
+    }
+    public bool CustomerLogin(string Username, string Password)
+    {
+        string checkusername = Username;
+        List<Customer> users = GetAllCustomers();
+        bool exists = false;
+        string loginpassword = "";
+        foreach (Customer customer in users)
+        {
+            if (checkusername == customer.Username)
+            {
+                loginpassword = customer.Password;
+                exists = true;
+            }
+        }
+        if (exists)
+        {
+            if (loginpassword == Password)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+        return false;
+    }
+    public Customer GetCustomerUsername(string username)
+    {
+        List<Customer> allcustomerUsername = GetAllCustomers();
+        foreach (Customer customer in allcustomerUsername)
+        {
+            if (customer.Username == username)
+            {
+                return customer;
+            }
+        }
+        return new Customer();
+    }
+
 }
 
- 
-  
+
+//List<Order> allOrders = new List<Order>();
+//        using(SqlConnection connection = new SqlConnection(_connectionString))
+//        {
+//            connection.Open();
+//            string OrdSelect = $"SELECT * FROM Orders WHERE CustomerId = {CID}";
+//            using(SqlCommand cmd = new SqlCommand(OrdSelect, connection))
+//            {
+//                using(SqlDataReader reader = cmd.ExecuteReader())
+//                {
+//                    while (reader.Read())
+//                    {
+//                        Order order = new Order();
+//                        order.OrderId = reader.GetInt32(0);
+//                        CID = reader.GetInt32(1);
+//                        order.StoreId = reader.GetInt32(2);
+//                        order.Total = reader.GetInt32(3);
+//                        order.OrderDate = reader.GetDateTime(4);
+
+//                        allOrders.Add(order);
+//                    }
+//                }
+//            }
+//            connection.Close();
+//        }
+//        return allOrders;
