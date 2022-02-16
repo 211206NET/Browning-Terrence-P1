@@ -3,7 +3,7 @@
 
 # Project Description
 
-Sign up/login and start shopping for apparel. You can add things to your cart or purchase items and see the total amount you spend on those products at checkout. You can also login to your admin account to add products and stores.  See all of the elements change in your AWS Database using SQL Server.
+Sign up/login and start shopping for apparel. You can add items to your cart or purchase items, then see the total amount you spent on those products at checkout. You can also login to your admin account to add products and stores.  Keep track of all the updated changes in your AWS Database using SQL Server.
 
 # Technologies Used
 * ADO.NET
